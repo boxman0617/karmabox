@@ -33,3 +33,12 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# IntelliJ
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+.idea/dictionaries/
+*.iml
+.idea/modules.xml
+*.iws
