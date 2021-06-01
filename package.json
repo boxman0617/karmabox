@@ -5,11 +5,27 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "migrate": "node scripts/migrate.mjs",
+    "twitter": "node twitter/index.mjs"
   },
   "dependencies": {
+    "cors": "2.8.5",
+    "dotenv": "8.2.0",
+    "firebase": "8.2.10",
+    "firebase-admin": "9.5.0",
     "next": "10.0.6",
+    "node-fetch": "2.6.1",
+    "nookies": "2.5.2",
+    "postgres": "1.0.2",
+    "postgres-migrations": "5.1.1",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "styled-components": "5.2.1",
+    "twit": "2.2.11"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "1.12.0",
+    "prettier": "2.2.1"
   }
 }

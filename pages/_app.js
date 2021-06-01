@@ -1,7 +1,29 @@
-import '../styles/globals.css'
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { AuthProvider } from "lib/auth";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+`;
 
-export default MyApp
+const theme = {
+  colors: {
+    primary: "#0070f3",
+  },
+};
+
+const App = ({ Component, pageProps }) => (
+  <>
+    <GlobalStyle />
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </AuthProvider>
+  </>
+);
+
+export default App;

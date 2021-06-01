@@ -1,0 +1,38 @@
+### getUser
+GET {{host}}/api/v1/user/boxman
+
+### getUser 404
+GET {{host}}/api/v1/user/not_a_real_user
+
+### ++User
+POST {{host}}/api/v1/user/boxman/++
+
+### arturoh
+POST {{host}}/api/v1/user/arturoh/++
+
+### new user
+POST {{host}}/api/v1/user/new_user0002/++
+
+### --User
+POST {{host}}/api/v1/user/boxman/--
+
+### Bulk
+POST {{host}}/api/v1/bulk
+Content-Type: application/json
+
+{
+  "actions": [
+    {
+      "username": "boxman",
+      "action": "--"
+    },
+    {
+      "username": "box",
+      "action": "++"
+    },
+    {
+      "username": "arturoh",
+      "action": "++"
+    }
+  ]
+}

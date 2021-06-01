@@ -1,0 +1,2 @@
+ALTER TABLE "UserKarma"
+    ALTER COLUMN "uid" DROP NOT NULL;
