@@ -1,29 +1,31 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle, css, ThemeProvider } from "styled-components";
 import { AuthProvider } from "lib/auth";
+import { theme } from "lib/theme";
+import { Layout } from "components/layout";
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-`;
+const GlobalStyle = createGlobalStyle(
+  ({ theme }) => css`
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
 
-const theme = {
-  colors: {
-    primary: "#0070f3",
-  },
-};
+      background-color: ${theme.colors.bodyBackground};
+    }
+  `
+);
 
 const App = ({ Component, pageProps }) => (
-  <>
-    <GlobalStyle />
-    <AuthProvider>
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </AuthProvider>
-  </>
+  <AuthProvider>
+    <ThemeProvider theme={theme}>
+      <>
+        <GlobalStyle />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </>
+    </ThemeProvider>
+  </AuthProvider>
 );
 
 export default App;

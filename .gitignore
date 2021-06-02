@@ -35,6 +35,7 @@ yarn-error.log*
 .idea/usage.statistics.xml
 .idea/shelf/
 .idea/dictionaries/
+.idea/dataSources*
 *.iml
 .idea/modules.xml
 *.iws

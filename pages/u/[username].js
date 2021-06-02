@@ -1,4 +1,5 @@
 import { getUserByUsername } from "lib/api/service";
+import { Avatar } from "components/avatar";
 
 export const getServerSideProps = async ({ params: { username } }) => {
   const user = await getUserByUsername(username);
@@ -16,7 +17,10 @@ export const getServerSideProps = async ({ params: { username } }) => {
 
 const UserPage = ({ user }) => (
   <div>
-    {user.username} -> {user.karma}
+    <Avatar />
+    <div>
+      {user.username} -> {user.karma}
+    </div>
   </div>
 );
 export default UserPage;
