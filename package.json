@@ -10,6 +10,9 @@
     "migrate": "node scripts/migrate.mjs",
     "twitter": "node twitter/index.mjs"
   },
+  "engines" : {
+    "node" : ">=16.0.0"
+  },
   "dependencies": {
     "pm2": "4.5.6",
     "cors": "2.8.5",
