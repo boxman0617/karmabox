@@ -4,23 +4,23 @@ import { createDb, migrate } from "postgres-migrations";
 import path from "path";
 
 const dbConfig = {
-  user: process.env.USERNAME,
-  password: process.env.PASSWORD,
-  host: process.env.HOSTNAME,
-  port: Number(process.env.PORT),
+  user: process.env["DB_USER"],
+  password: process.env["DB_PASSWORD"],
+  host: process.env["DB_HOST"],
+  port: Number(process.env["DB_PORT"]),
 };
 
 console.log({ dbConfig });
 
 const doMigrate = async () => {
-  await createDb(process.env.DATABASE, {
+  await createDb(process.env["DB_NAME"], {
     ...dbConfig,
     defaultDatabase: "postgres",
   });
   await migrate(
     {
       ...dbConfig,
-      database: process.env.DATABASE,
+      database: process.env["DB_NAME"],
     },
     path.resolve(process.cwd(), "lib/migrations")
   );
