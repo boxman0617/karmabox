@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && yarn migrate",
+    "build": "next build",
     "start": "yarn migrate && pm2 start ecosystem.config.js",
     "stop": "pm2 stop ecosystem.config.js",
     "migrate": "node scripts/migrate.mjs",
