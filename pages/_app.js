@@ -1,8 +1,6 @@
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { AuthProvider } from "lib/auth";
 
-console.log(process.env.PRIVATE_KEY);
-
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;

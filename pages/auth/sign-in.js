@@ -5,7 +5,9 @@ import { ssrUseAuth } from "lib/auth/ssr";
 
 export const getServerSideProps = async (ctx) => {
   try {
+    console.log("gssp:1");
     await ssrUseAuth(ctx);
+    console.log("gssp:2");
 
     return {
       redirect: {
