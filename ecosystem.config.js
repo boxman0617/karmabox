@@ -1,6 +1,12 @@
 module.exports = {
   apps: [
     {
+      name: "DB Migration",
+      script: "./scripts/migrate.mjs",
+      watch: false,
+      autorestart: false,
+    },
+    {
       name: "Twitter Bot",
       script: "./twitter/index.mjs",
       watch: false,

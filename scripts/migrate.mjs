@@ -15,7 +15,6 @@ const doMigrate = async () => {
   try {
     await createDb(process.env["DB_NAME"], {
       ...dbConfig,
-      defaultDatabase: "postges",
     });
   } catch (e) {
     console.error(e);
