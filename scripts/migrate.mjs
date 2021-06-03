@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 config();
-import { createDb, migrate } from "postgres-migrations";
+import { migrate } from "postgres-migrations";
 import path from "path";
 import pg from "pg";
 
@@ -18,14 +18,6 @@ const client = new pg.Client({
 const doMigrate = async () => {
   console.log("Connecting to DB...");
   await client.connect();
-  console.log("Creating DB...");
-  try {
-    await createDb(process.env["DB_NAME"], {
-      client,
-    });
-  } catch (e) {
-    console.error(e);
-  }
   console.log("Starting migration...");
   await migrate(
     {

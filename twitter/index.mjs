@@ -23,7 +23,7 @@ stream.on(
     const matches = [...text.matchAll(karmaMatch)];
 
     if (Boolean(matches.length)) {
-      const response = await fetch("http://localhost:3000/api/v1/bulk", {
+      const response = await fetch(`https://${process.env["SDK_HOST"]}:${process.env["SDK_PORT"]}/api/v1/bulk`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
