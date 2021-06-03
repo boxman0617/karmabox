@@ -51,8 +51,9 @@ stream.on(
           status: reply,
           in_reply_to_status_id: replyId,
         },
-        (err, data, res) => {
-          console.error(err, data, res);
+        (err, { text }) => {
+          if (err) throw err;
+          console.log(text);
         }
       );
     }
