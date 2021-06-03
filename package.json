@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "up": "next start -H 0.0.0.0 -p 8080",
-    "start": "pm2 start ecosystem.config.js && exit 0",
-    "stop": "pm2 stop ecosystem.config.js",
+    "start": "yarn stop && pm2-runtime start ecosystem.config.js && exit 0",
+    "stop": "pm2-runtime stop ecosystem.config.js",
     "migrate": "node scripts/migrate.mjs",
     "twitter": "node twitter/index.mjs"
   },
