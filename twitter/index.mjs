@@ -23,18 +23,21 @@ stream.on(
     const matches = [...text.matchAll(karmaMatch)];
 
     if (Boolean(matches.length)) {
-      const response = await fetch(`https://${process.env["SDK_HOST"]}:${process.env["SDK_PORT"]}/api/v1/bulk`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          actions: matches.map(([_, username, action]) => ({
-            username,
-            action,
-          })),
-        }),
-      }).then((res) => res.json());
+      const response = await fetch(
+        `http://${process.env["SDK_HOST"]}:${process.env["SDK_PORT"]}/api/v1/bulk`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            actions: matches.map(([_, username, action]) => ({
+              username,
+              action,
+            })),
+          }),
+        }
+      ).then((res) => res.json());
       const reply = `@${screenName} ${response.map(
         ({ username, karma, action, actionDiff }) =>
           `@${username} (${karma}) ${
