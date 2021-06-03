@@ -7,7 +7,7 @@
     "build": "next build",
     "up": "next start -H 0.0.0.0 -p 8080",
     "start": "yarn stop && pm2-runtime start ecosystem.config.js && exit 0",
-    "stop": "pm2-runtime stop ecosystem.config.js",
+    "stop": "pm2-runtime stop all",
     "migrate": "node scripts/migrate.mjs",
     "twitter": "node twitter/index.mjs"
   },
@@ -24,6 +24,7 @@
     "node-fetch": "2.6.1",
     "nookies": "2.5.2",
     "postgres": "1.0.2",
+    "pg": "8.6.0",
     "postgres-migrations": "5.1.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
