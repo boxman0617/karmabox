@@ -4,7 +4,16 @@ import { createDb, migrate } from "postgres-migrations";
 import path from "path";
 import pg from "pg";
 
-const client = new pg.Client(process.env["DATABASE_URL"]);
+const client = new pg.Client({
+  host: process.env["DB_HOST"],
+  user: process.env["DB_USER"],
+  database: process.env["DB_NAME"],
+  port: process.env["DB_PORT"],
+  password: process.env["DB_PASSWORD"],
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
 const doMigrate = async () => {
   console.log("Connecting to DB...");
