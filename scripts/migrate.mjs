@@ -11,10 +11,16 @@ const dbConfig = {
 };
 
 const doMigrate = async () => {
-  await createDb(process.env["DB_NAME"], {
-    ...dbConfig,
-    defaultDatabase: "postgres",
-  });
+  console.log("Creating DB...");
+  try {
+    await createDb(process.env["DB_NAME"], {
+      ...dbConfig,
+      defaultDatabase: "postges",
+    });
+  } catch (e) {
+    console.error(e);
+  }
+  console.log("Starting migration...");
   await migrate(
     {
       ...dbConfig,
