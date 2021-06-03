@@ -10,8 +10,6 @@ const dbConfig = {
   port: Number(process.env["DB_PORT"]),
 };
 
-console.log({ dbConfig });
-
 const doMigrate = async () => {
   await createDb(process.env["DB_NAME"], {
     ...dbConfig,
