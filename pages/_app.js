@@ -5,6 +5,8 @@ import { Layout } from "components/layout";
 
 const GlobalStyle = createGlobalStyle(
   ({ theme }) => css`
+    @import url("https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap");
+
     body {
       margin: 0;
       padding: 0;

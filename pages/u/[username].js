@@ -1,5 +1,12 @@
 import { getUserByUsername } from "lib/api/service";
-import { Avatar } from "components/avatar";
+import { UsernameBox } from "components/username_box";
+import styled from "styled-components";
+
+const UserPageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const getServerSideProps = async ({ params: { username } }) => {
   const user = await getUserByUsername(username);
@@ -16,11 +23,8 @@ export const getServerSideProps = async ({ params: { username } }) => {
 };
 
 const UserPage = ({ user }) => (
-  <div>
-    <Avatar />
-    <div>
-      {user.username} -> {user.karma}
-    </div>
-  </div>
+  <UserPageContainer>
+    <UsernameBox user={user} />
+  </UserPageContainer>
 );
 export default UserPage;
