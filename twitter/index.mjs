@@ -14,7 +14,7 @@ const t = new Twit({
   ...twitterConfig,
 });
 
-const stream = t.stream("statuses/filter", { track: "karma ++,karma --" });
+const stream = t.stream("statuses/filter", { track: ["karma ++", "karma --"] });
 
 const karmaMatch = /((?:u\/|@)\w+)\skarma\s(\+\+|--)/g;
 
@@ -45,19 +45,17 @@ const getReply = (screenName, response) =>
 
 stream.on(
   "tweet",
-  async ({ text, id: replyId, user: { screen_name: screenName } }) => {
+  async ({ text, user: { screen_name: screenName } }) => {
     const matches = [...text.matchAll(karmaMatch)];
 
     if (Boolean(matches.length)) {
-      console.log('Tweet', text);
+      console.log("Tweet", text);
       const response = await postBulkActions(matches);
       const reply = getReply(screenName, response);
       t.post(
         "statuses/update",
         {
           status: reply,
-          in_reply_to_status_id: replyId,
-          auto_populate_reply_metadata: true,
         },
         (err, { text: replyText }) => {
           if (err) throw err;
