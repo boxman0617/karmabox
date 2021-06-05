@@ -14,46 +14,54 @@ const t = new Twit({
   ...twitterConfig,
 });
 
-const stream = t.stream("statuses/filter", { track: "karma" });
+const stream = t.stream("statuses/filter", { track: "karma ++,karma --" });
 
 const karmaMatch = /((?:u\/|@)\w+)\skarma\s(\+\+|--)/g;
+
+const postBulkActions = (matches) =>
+  fetch(
+    `http://${process.env["SDK_HOST"]}:${process.env["SDK_PORT"]}/api/v1/bulk`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        actions: matches.map(([_, username, action]) => ({
+          username,
+          action,
+        })),
+      }),
+    }
+  ).then((res) => res.json());
+
+const getReply = (screenName, response) =>
+  `@${screenName} ${response.map(
+    ({ username, karma, action, actionDiff }) =>
+      `@${username} (${karma}) ${
+        action === "++" ? "gained" : "lost"
+      } ${Math.abs(actionDiff)} karma! `
+  )}`.trim();
+
 stream.on(
   "tweet",
   async ({ text, id: replyId, user: { screen_name: screenName } }) => {
     const matches = [...text.matchAll(karmaMatch)];
 
     if (Boolean(matches.length)) {
-      const response = await fetch(
-        `http://${process.env["SDK_HOST"]}:${process.env["SDK_PORT"]}/api/v1/bulk`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            actions: matches.map(([_, username, action]) => ({
-              username,
-              action,
-            })),
-          }),
-        }
-      ).then((res) => res.json());
-      const reply = `@${screenName} ${response.map(
-        ({ username, karma, action, actionDiff }) =>
-          `@${username} (${karma}) ${
-            action === "++" ? "gained" : "lost"
-          } ${Math.abs(actionDiff)} karma! `
-      )}`.trim();
-
+      console.log('Tweet', text);
+      const response = await postBulkActions(matches);
+      const reply = getReply(screenName, response);
       t.post(
         "statuses/update",
         {
           status: reply,
           in_reply_to_status_id: replyId,
+          auto_populate_reply_metadata: true,
         },
-        (err, { text }) => {
+        (err, { text: replyText }) => {
           if (err) throw err;
-          console.log(text);
+          console.log(replyText);
         }
       );
     }
