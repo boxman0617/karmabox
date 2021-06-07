@@ -1,25 +1,13 @@
-import Link from "next/link";
 import { pageSSRUseAuth } from "lib/auth/ssr";
-import { SignOut } from "components/sign-out";
+import { HomePageHeader } from "components/home_page_header";
+import { KarmaLiveFeed } from "../components/karma_live_feed";
 
 export const getServerSideProps = (ctx) => pageSSRUseAuth(ctx);
 
 const Index = ({ user }) => (
   <div>
-    <div>
-      {user ? (
-        <SignOut username={user.username} />
-      ) : (
-        <div>
-          <Link href="/auth/sign-in">
-            <a>Sign In</a>
-          </Link>
-          <Link href="/auth/sign-up">
-            <a>Sign Up</a>
-          </Link>
-        </div>
-      )}
-    </div>
+    <HomePageHeader user={user} />
+    <KarmaLiveFeed />
   </div>
 );
 
