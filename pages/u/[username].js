@@ -1,6 +1,7 @@
 import { getUserByUsername } from "lib/api/service";
-import { UsernameBox } from "components/username_box";
+import { UsernameBox } from "components/username-box";
 import styled from "styled-components";
+import { pageSSRUseAuth } from "lib/auth/ssr";
 
 const UserPageContainer = styled.div`
   display: flex;
@@ -8,7 +9,10 @@ const UserPageContainer = styled.div`
   align-items: center;
 `;
 
-export const getServerSideProps = async ({ params: { username } }) => {
+export const getServerSideProps = async (ctx) => {
+  const {
+    params: { username },
+  } = ctx;
   const user = await getUserByUsername(username);
 
   if (!user) {
@@ -17,8 +21,9 @@ export const getServerSideProps = async ({ params: { username } }) => {
     };
   }
 
+  const { props: authUserProps } = await pageSSRUseAuth(ctx);
   return {
-    props: { user },
+    props: { user, currentUser: authUserProps.user || null },
   };
 };
 

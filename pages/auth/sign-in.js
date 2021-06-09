@@ -1,65 +1,53 @@
-import { useState } from "react";
 import Head from "next/head";
-import { firebaseClient } from "lib/auth/client";
-import { ssrUseAuth } from "lib/auth/ssr";
+import { pageSSRUseAuthAndRedirectToUser } from "lib/auth/ssr";
+import { SignInForm } from "components/sign-in-form";
+import styled, { css } from "styled-components";
+import media from "styled-media-query";
 
-export const getServerSideProps = async (ctx) => {
-  try {
-    console.log("gssp:1");
-    await ssrUseAuth(ctx);
-    console.log("gssp:2");
+const LeftSide = styled.div``;
+const RightSide = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/",
-      },
-      props: {},
-    };
-  } catch (e) {
-    console.log("No auth session found, continue normally to sign in page");
+    background-color: ${theme.colors.signInRightBackground};
+    color: ${theme.colors.signInFontColor};
+  `
+);
+const PageContainer = styled.div`
+  ${media.lessThan("small")`${css`
+    display: grid;
+    grid-template-columns: 1fr;
 
-    return {
-      props: {},
-    };
-  }
-};
+    ${LeftSide} {
+      display: none;
+    }
+  `}`}
+  ${media.between("small", "large")`${css`
+    grid-template-columns: 50% 1fr;
+  `}`}
+  display: grid;
+  grid-template-columns: 60% 1fr;
+  height: 100%;
 
-const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  font-family: Helvetica;
+`;
 
-  return (
-    <div>
-      <Head>
-        <title>KarmaBox - Sign In</title>
-      </Head>
-      <form action={"javascript.void(0);"}>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          autoComplete="email"
-        />
-        <input
-          type="password"
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-          placeholder="Password"
-          autoComplete="current-password"
-        />
-        <button
-          type="button"
-          onClick={async () => {
-            await firebaseClient.auth().signInWithEmailAndPassword(email, pass);
-            window.location.href = "/";
-          }}
-        >
-          Sign In
-        </button>
-      </form>
-    </div>
-  );
-};
+export const getServerSideProps = async (ctx) =>
+  pageSSRUseAuthAndRedirectToUser(ctx);
+
+const SignIn = () => (
+  <>
+    <Head>
+      <title>KarmaBox - Sign In</title>
+    </Head>
+    <PageContainer>
+      <LeftSide />
+      <RightSide>
+        <SignInForm />
+      </RightSide>
+    </PageContainer>
+  </>
+);
 export default SignIn;

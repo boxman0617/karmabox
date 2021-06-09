@@ -6,12 +6,12 @@ import {
   Karma,
 } from "./styles";
 
-export const UsernameBox = ({ user }) => (
+export const UsernameBox = ({ user: { karma, username } }) => (
   <UsernameCircleContainer>
     <UsernameOuterBox>
       <UsernameInnerCircle />
     </UsernameOuterBox>
-    <Username>{user.username}</Username>
-    <Karma>Karma: {user.karma}</Karma>
+    <Username>{username}</Username>
+    <Karma>Karma: {karma}</Karma>
   </UsernameCircleContainer>
 );

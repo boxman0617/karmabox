@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { pageSSRUseAuth } from "lib/auth/ssr";
-import { SignOut } from "components/sign_out";
+import { SignOut } from "components/sign-out";
 
 export const getServerSideProps = (ctx) => pageSSRUseAuth(ctx);
 
