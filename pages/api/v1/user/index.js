@@ -21,10 +21,11 @@ async function createNewUser({ body }, res) {
   const [newUser] = await sql`
       INSERT INTO "UserKarma" ${sql({
         uid: user.uid,
-        username,
+        username: username,
         karma: 0,
       })}
-      
+      ON CONFLICT ON CONSTRAINT unique_username
+      DO UPDATE SET uid = ${user.uid}
       returning *
   `;
 

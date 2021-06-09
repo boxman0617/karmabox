@@ -1,76 +1,108 @@
 import { useState } from "react";
 import Head from "next/head";
-import { ssrUseAuth } from "lib/auth/ssr";
-import { useSDK } from "lib/sdk/context";
+import { pageSSRUseAuthAndRedirectToUser } from "lib/auth/ssr";
+import styled, { css } from "styled-components";
+import { SignUpForm } from "components/sign-up-form";
+import { SignUpUsernameAvailability } from "components/sign-up-username-availability";
+import { UsernameBox } from "components/username-box";
+import { rem } from "polished";
+import media from "styled-media-query";
 
-export const getServerSideProps = async (ctx) => {
-  try {
-    await ssrUseAuth(ctx);
+const LeftSide = styled.div``;
+const RightSide = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/",
-      },
-      props: {},
-    };
-  } catch (e) {
-    console.log("No auth session found, continue normally to sign up page");
+    background-color: ${theme.colors.signInRightBackground};
+    color: ${theme.colors.signInFontColor};
+  `
+);
+const PageContainer = styled.div`
+  ${media.lessThan("small")`${css`
+    display: grid;
+    grid-template-columns: 1fr;
 
-    return {
-      props: {},
-    };
-  }
-};
+    ${LeftSide} {
+      display: none;
+    }
+  `}`}
+  ${media.between("small", "large")`${css`
+    grid-template-columns: 50% 1fr;
+  `}`}
+  display: grid;
+  grid-template-columns: 60% 1fr;
+  height: 100%;
+
+  font-family: Helvetica;
+`;
+const LeftNote = styled.div(
+  ({ theme }) => css`
+    font-size: ${rem(20)};
+    font-weight: bold;
+    color: ${theme.colors.noteColor};
+  `
+);
+const UsernameAvailability = styled.div(
+  ({ theme, isAvailable }) => css`
+    color: ${isAvailable
+      ? theme.colors.usernameIsAvailable
+      : theme.colors.usernameIsNotAvailable};
+    font-size: ${rem(30)};
+    font-weight: bold;
+  `
+);
+
+export const getServerSideProps = async (ctx) =>
+  pageSSRUseAuthAndRedirectToUser(ctx);
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [user, setUser] = useState({
+    username: "",
+    karma: 0,
+    isAvailable: true,
+  });
 
-  const { user } = useSDK();
-
-  const doSubmit = async () => {
-    await user.create({
-      username,
-      email,
-      password: pass,
-    });
-
-    window.location.href = "/auth/sign-in";
-  };
   return (
-    <div>
+    <>
       <Head>
         <title>KarmaBox - Sign Up</title>
       </Head>
-      <form action={"javascript.void(0);"}>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          autoComplete="username"
-        />
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          autoComplete="email"
-        />
-        <input
-          type="password"
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-          placeholder="Password"
-          autoComplete="current-password"
-        />
-        <button type="button" onClick={doSubmit}>
-          Sign Up
-        </button>
-      </form>
-    </div>
+      <PageContainer>
+        <LeftSide>
+          <SignUpUsernameAvailability>
+            {user.username.length >= 3 ? (
+              <>
+                <UsernameBox user={user} />
+                <UsernameAvailability isAvailable={user.isAvailable}>
+                  {user.isAvailable ? "Available!" : "Taken!"}
+                </UsernameAvailability>
+              </>
+            ) : (
+              <LeftNote>Search for your Username!</LeftNote>
+            )}
+          </SignUpUsernameAvailability>
+        </LeftSide>
+        <RightSide>
+          <SignUpForm
+            onCheck={({ isAvailable, username, karma }) => {
+              setUser({
+                username,
+                isAvailable,
+                karma,
+              });
+            }}
+            onUsernameChange={({ username }) => {
+              setUser({
+                ...user,
+                username,
+              });
+            }}
+          />
+        </RightSide>
+      </PageContainer>
+    </>
   );
 };
 export default SignUp;
