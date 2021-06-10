@@ -1,19 +1,28 @@
 import { useRouter } from "next/router";
 import { firebaseClient } from "lib/auth/client";
+import Link from "next/link";
+import { SignOutContainer, SignOutLink, UserLink } from "./styles";
 
 export const SignOut = ({ username }) => {
   const router = useRouter();
 
-  const signOut = () =>
-    firebaseClient
+  const signOut = (e) => {
+    e.preventDefault();
+
+    return firebaseClient
       .auth()
       .signOut()
       .then(() => router.push("/"));
+  };
 
   return (
-    <div>
-      <div>{username}</div>
-      <button onClick={signOut}>Sign out</button>
-    </div>
+    <SignOutContainer>
+      <Link href={`/u/${username}`}>
+        <UserLink>{username}</UserLink>
+      </Link>
+      <SignOutLink href="javascript.void(0);" onClick={signOut}>
+        Sign Out
+      </SignOutLink>
+    </SignOutContainer>
   );
 };

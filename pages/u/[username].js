@@ -2,6 +2,7 @@ import { getUserByUsername } from "lib/api/service";
 import { UsernameBox } from "components/username-box";
 import styled from "styled-components";
 import { pageSSRUseAuth } from "lib/auth/ssr";
+import { PageHeader } from "components/page-header";
 
 const UserPageContainer = styled.div`
   display: flex;
@@ -28,8 +29,11 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const UserPage = ({ user }) => (
-  <UserPageContainer>
-    <UsernameBox user={user} />
-  </UserPageContainer>
+  <>
+    <PageHeader user={user} />
+    <UserPageContainer>
+      <UsernameBox user={user} />
+    </UserPageContainer>
+  </>
 );
 export default UserPage;
