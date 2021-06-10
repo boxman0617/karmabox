@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { firebaseClient } from "lib/auth/client";
+import { useSDK } from "lib/sdk/context";
 import {
   FormElement,
   FormRememberAndForgottenContainer,
@@ -11,13 +13,20 @@ import {
 } from "./styles";
 
 export const SignInForm = () => {
+  const router = useRouter();
+  const sdk = useSDK();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await firebaseClient.auth().signInWithEmailAndPassword(email, pass);
-    window.location.href = "/";
+
+    const fbAuthUser = await firebaseClient
+      .auth()
+      .signInWithEmailAndPassword(email, pass);
+    const user = await sdk.user.getByUid(fbAuthUser.user.uid);
+
+    await router.push(`/u/${user.username}`);
   };
 
   return (

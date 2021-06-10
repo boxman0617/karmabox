@@ -1,13 +1,13 @@
 import { pageSSRUseAuth } from "lib/auth/ssr";
-import { HomePageHeader } from "components/home_page_header";
-import { KarmaLiveFeed } from "../components/karma_live_feed";
+import { PageHeader } from "components/page-header";
+// import { KarmaLiveFeed } from "components/karma-live-feed";
 
 export const getServerSideProps = (ctx) => pageSSRUseAuth(ctx);
 
 const Index = ({ user }) => (
   <div>
-    <HomePageHeader user={user} />
-    <KarmaLiveFeed />
+    <PageHeader user={user} />
+    {/*<KarmaLiveFeed />*/}
   </div>
 );
 

@@ -24,7 +24,7 @@ export const ListItem = styled.li(
     padding: ${rem(10)};
 
     border-radius: ${rem(5)};
-    margin-bottom: ${rem(4)};
+    margin-bottom: ${rem(10)};
     &:last-child {
       margin-bottom: 0;
     }

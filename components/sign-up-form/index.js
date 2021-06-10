@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSDK } from "lib/sdk/context";
 import {
   FormElement,
@@ -12,6 +13,7 @@ import { UniqueLiveUsername } from "./unique-live-username";
 
 export const SignUpForm = ({ onCheck, onUsernameChange }) => {
   const { user } = useSDK();
+  const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -34,8 +36,7 @@ export const SignUpForm = ({ onCheck, onUsernameChange }) => {
         email,
         password: pass,
       });
-
-      window.location.href = "/auth/sign-in";
+      await router.push("/auth/sign-in");
     }
   };
 
