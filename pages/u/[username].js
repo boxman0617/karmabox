@@ -28,9 +28,9 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const UserPage = ({ user }) => (
+const UserPage = ({ user, currentUser }) => (
   <>
-    <PageHeader user={user} />
+    <PageHeader user={currentUser} />
     <UserPageContainer>
       <UsernameBox user={user} />
     </UserPageContainer>
